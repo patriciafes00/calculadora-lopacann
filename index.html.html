@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calculadora Lopacann-dol 3%</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-container">
+    <h1>🌿 Calculadora Lopacann-dol 3%</h1>
+
+    <label for="especie">🐶🐱 Especie:</label>
+    <select id="especie">
+      <option value="perro">🐶 Perro</option>
+      <option value="gato">🐱 Gato</option>
+    </select>
+
+    <label for="peso">⚖️ Peso (kg):</label>
+    <input type="number" id="peso" placeholder="Ej: 10" step="0.1" />
+
+    <label for="patologia">🌸 Patología:</label>
+    <select id="patologia">
+      <option value="dolor">🌼 Dolor crónico</option>
+      <option value="epilepsia">✨ Epilepsia</option>
+      <option value="inflamacion">🍃 Inflamación</option>
+      <option value="comportamiento">🌙 Comportamiento</option>
+    </select>
+
+    <button id="btn-calcular">🔮 Calcular dosis</button>
+
+    <div id="resultado" class="resultado"></div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
