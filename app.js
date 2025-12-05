@@ -7,17 +7,14 @@ function enviarRegistroAnalytics(datos) {
 
   fetch(API_URL, {
     method: "POST",
+    mode: "no-cors", // 👈 importante para evitar problemas de CORS
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(datos)
-  })
-    .then(() => {
-      console.log("Datos enviados correctamente");
-    })
-    .catch((error) => {
-      console.error("Error enviando datos a Sheets:", error);
-    });
+  }).catch((error) => {
+    console.error("Error enviando datos a Sheets:", error);
+  });
 }
 
 function calcularDosis() {
@@ -33,16 +30,17 @@ function calcularDosis() {
     return;
   }
 
+  // Fórmulas de dosis
   const dosis_inicial_mg = 0.3 * peso;
   const dosis_mantenimiento_mg = 2 * peso;
 
   const gotas_inicial = dosis_inicial_mg / 1.5;
-  const gotas_mantenimiento = dosis_mantenimiento_mg / 1.5;
+  const gotas_mantenimiento_mg = dosis_mantenimiento_mg / 1.5;
 
   const patologiaTexto =
     patologiaSelect.options[patologiaSelect.selectedIndex].text;
   const especieTexto =
-    especieSelect.options[patologiaSelect.selectedIndex].text;
+    especieSelect.options[especieSelect.selectedIndex].text;
 
   resultadoDiv.innerHTML =
     "🩺 Especie: <b>" + especieTexto + "</b><br>" +
@@ -54,7 +52,7 @@ function calcularDosis() {
     "🌿 Dosis de mantenimiento: hasta <b>" +
     dosis_mantenimiento_mg.toFixed(2) +
     " mg</b> (" +
-    gotas_mantenimiento.toFixed(1) +
+    gotas_mantenimiento_mg.toFixed(1) +
     " gotas)<br>" +
     "⏳ Frecuencia: 1–2 veces al día<br>" +
     "🧬 Patología seleccionada: <b>" +
@@ -66,8 +64,8 @@ function calcularDosis() {
     especie: especieSelect.value,
     peso: peso,
     patologia: patologiaSelect.value,
-    region: "Santiago de Chile",   // 🔒 valor fijo
-    tipoUsuario: "veterinario",    // 🔒 valor fijo
+    region: "Santiago de Chile", // fijo
+    tipoUsuario: "veterinario",  // fijo
     dosisInicialMg: dosis_inicial_mg,
     dosisMantenimientoMg: dosis_mantenimiento_mg
   });
@@ -86,3 +84,4 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 });
+
