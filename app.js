@@ -1,24 +1,29 @@
+// 👉 URL de tu API en Apps Script
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzP_4MF_rZuTTcJqN5tu_zK29xIGNbzXSmb1Wyst1SE6i0dIkc7QSzMipC-xJt1Umbo/exec";
 
 function enviarRegistroAnalytics(datos) {
+  console.log("Enviando datos a Sheets...", datos);
+
   fetch(API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(datos)
-  }).catch((error) => {
-    console.error("Error enviando datos a Sheets:", error);
-  });
+  })
+    .then(() => {
+      console.log("Datos enviados correctamente");
+    })
+    .catch((error) => {
+      console.error("Error enviando datos a Sheets:", error);
+    });
 }
 
 function calcularDosis() {
   const pesoInput = document.getElementById("peso");
   const especieSelect = document.getElementById("especie");
   const patologiaSelect = document.getElementById("patologia");
-  
-  
   const resultadoDiv = document.getElementById("resultado");
 
   const peso = parseFloat(pesoInput.value);
@@ -28,7 +33,6 @@ function calcularDosis() {
     return;
   }
 
-  
   const dosis_inicial_mg = 0.3 * peso;
   const dosis_mantenimiento_mg = 2 * peso;
 
@@ -38,7 +42,7 @@ function calcularDosis() {
   const patologiaTexto =
     patologiaSelect.options[patologiaSelect.selectedIndex].text;
   const especieTexto =
-    especieSelect.options[especieSelect.selectedIndex].text;
+    especieSelect.options[patologiaSelect.selectedIndex].text;
 
   resultadoDiv.innerHTML =
     "🩺 Especie: <b>" + especieTexto + "</b><br>" +
@@ -57,19 +61,19 @@ function calcularDosis() {
     patologiaTexto +
     "</b>";
 
-  // 👉 Enviar datos a tu hoja de cálculo
+  // 👉 Enviar datos fijos a tu hoja de cálculo
   enviarRegistroAnalytics({
     especie: especieSelect.value,
     peso: peso,
     patologia: patologiaSelect.value,
-    region: regionInput.value,
-    tipoUsuario: tipoUsuarioSelect.value,
+    region: "Santiago de Chile",   // 🔒 valor fijo
+    tipoUsuario: "veterinario",    // 🔒 valor fijo
     dosisInicialMg: dosis_inicial_mg,
     dosisMantenimientoMg: dosis_mantenimiento_mg
   });
 }
 
-// Botón y service worker (si ya lo tenías)
+// Botón y service worker
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("btn-calcular");
   btn.addEventListener("click", calcularDosis);
@@ -82,4 +86,3 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 });
-
