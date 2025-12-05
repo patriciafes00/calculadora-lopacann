@@ -1,7 +1,25 @@
+// 👉 URL de tu API en Apps Script
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbzP_4MF_rZuTTcJqN5tu_zK29xIGNbzXSmb1Wyst1SE6i0dIkc7QSzMipC-xJt1Umbo/exec";
+
+function enviarRegistroAnalytics(datos) {
+  fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(datos)
+  }).catch((error) => {
+    console.error("Error enviando datos a Sheets:", error);
+  });
+}
+
 function calcularDosis() {
   const pesoInput = document.getElementById("peso");
   const especieSelect = document.getElementById("especie");
   const patologiaSelect = document.getElementById("patologia");
+  const regionInput = document.getElementById("region");
+  const tipoUsuarioSelect = document.getElementById("tipoUsuario");
   const resultadoDiv = document.getElementById("resultado");
 
   const peso = parseFloat(pesoInput.value);
@@ -11,7 +29,7 @@ function calcularDosis() {
     return;
   }
 
-  // Podrías ajustar la dosis según especie o patología más adelante
+  // Aquí puedes ir afinando las fórmulas de dosis
   const dosis_inicial_mg = 0.3 * peso;
   const dosis_mantenimiento_mg = 2 * peso;
 
@@ -39,10 +57,29 @@ function calcularDosis() {
     "🧬 Patología seleccionada: <b>" +
     patologiaTexto +
     "</b>";
+
+  // 👉 Enviar datos a tu hoja de cálculo
+  enviarRegistroAnalytics({
+    especie: especieSelect.value,
+    peso: peso,
+    patologia: patologiaSelect.value,
+    region: regionInput.value,
+    tipoUsuario: tipoUsuarioSelect.value,
+    dosisInicialMg: dosis_inicial_mg,
+    dosisMantenimientoMg: dosis_mantenimiento_mg
+  });
 }
 
-// Conectar el botón a la función cuando cargue la página
+// Botón y service worker (si ya lo tenías)
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("btn-calcular");
   btn.addEventListener("click", calcularDosis);
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("./service-worker.js")
+      .catch((error) => {
+        console.error("Error al registrar el Service Worker:", error);
+      });
+  }
 });
