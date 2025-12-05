@@ -1,4 +1,3 @@
-// 👉 URL de tu API en Apps Script
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzP_4MF_rZuTTcJqN5tu_zK29xIGNbzXSmb1Wyst1SE6i0dIkc7QSzMipC-xJt1Umbo/exec";
 
@@ -18,8 +17,8 @@ function calcularDosis() {
   const pesoInput = document.getElementById("peso");
   const especieSelect = document.getElementById("especie");
   const patologiaSelect = document.getElementById("patologia");
-  const regionInput = document.getElementById("region");
-  const tipoUsuarioSelect = document.getElementById("tipoUsuario");
+  
+  
   const resultadoDiv = document.getElementById("resultado");
 
   const peso = parseFloat(pesoInput.value);
@@ -29,7 +28,7 @@ function calcularDosis() {
     return;
   }
 
-  // Aquí puedes ir afinando las fórmulas de dosis
+  
   const dosis_inicial_mg = 0.3 * peso;
   const dosis_mantenimiento_mg = 2 * peso;
 
@@ -83,3 +82,4 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 });
+
