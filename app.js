@@ -7,7 +7,7 @@ function enviarRegistroAnalytics(datos) {
 
   fetch(API_URL, {
     method: "POST",
-    mode: "no-cors", // 👈 importante para evitar problemas de CORS
+    mode: "no-cors", // importante para evitar problemas de CORS
     headers: {
       "Content-Type": "application/json"
     },
@@ -21,6 +21,7 @@ function calcularDosis() {
   const pesoInput = document.getElementById("peso");
   const especieSelect = document.getElementById("especie");
   const patologiaSelect = document.getElementById("patologia");
+  const regionSelect = document.getElementById("region");
   const resultadoDiv = document.getElementById("resultado");
 
   const peso = parseFloat(pesoInput.value);
@@ -41,9 +42,13 @@ function calcularDosis() {
     patologiaSelect.options[patologiaSelect.selectedIndex].text;
   const especieTexto =
     especieSelect.options[especieSelect.selectedIndex].text;
+  const regionTexto =
+    regionSelect.options[regionSelect.selectedIndex].text;
 
   resultadoDiv.innerHTML =
     "🩺 Especie: <b>" + especieTexto + "</b><br>" +
+    "⚖️ Peso: <b>" + peso.toFixed(2) + " kg</b><br>" +
+    "📍 Región: <b>" + regionTexto + "</b><br>" +
     "🌿 Dosis inicial: <b>" +
     dosis_inicial_mg.toFixed(2) +
     " mg</b> (" +
@@ -59,13 +64,13 @@ function calcularDosis() {
     patologiaTexto +
     "</b>";
 
-  // 👉 Enviar datos fijos a tu hoja de cálculo
+  // 👉 Enviar datos a tu hoja de cálculo
   enviarRegistroAnalytics({
     especie: especieSelect.value,
     peso: peso,
     patologia: patologiaSelect.value,
-    region: "Santiago de Chile", // fijo
-    tipoUsuario: "veterinario",  // fijo
+    region: regionSelect.value,   // ahora viene del selector
+    tipoUsuario: "veterinario",  // seguimos fijo
     dosisInicialMg: dosis_inicial_mg,
     dosisMantenimientoMg: dosis_mantenimiento_mg
   });
@@ -84,4 +89,3 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 });
-
